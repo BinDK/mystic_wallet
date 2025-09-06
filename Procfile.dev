@@ -1,0 +1,2 @@
+web: bin/rails server
+worker: bundle exec sidekiq -q high -q default -q low
