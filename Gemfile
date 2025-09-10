@@ -47,3 +47,5 @@ gem "sidekiq", "~> 8.0"
 gem "sidekiq-cron", "~> 2.3"
 
 gem "faker", "~> 3.5"
+
+gem "dotenv-rails", "~> 3.1"
