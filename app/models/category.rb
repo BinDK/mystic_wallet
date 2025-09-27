@@ -21,11 +21,11 @@ class Category < ApplicationRecord
 
   has_many :transactions
 
-  before_save :titleize_name
+  before_save :downcase_name
 
   private
 
-  def titleize_name
-    self.name = name.titleize if name.present?
+  def downcase_name
+    self.name = name.downcase if name.present?
   end
 end
