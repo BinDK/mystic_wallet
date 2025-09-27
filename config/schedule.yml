@@ -1,0 +1,5 @@
+user_generator:
+  cron: "*/5 * * * *"
+  class: "UserGeneratorJob"
+  queue: "default"
+  retry: 0
