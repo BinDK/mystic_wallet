@@ -3,3 +3,9 @@ user_generator:
   class: "UserGeneratorJob"
   queue: "default"
   retry: 0
+
+transaction_generator:
+  cron: "*/15 * * * *"
+  class: "TransactionGeneratorJob"
+  queue: "default"
+  retry: 0
