@@ -13,7 +13,7 @@ require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 # require "rails/test_unit/railtie"
-require_relative "../lib/simple_route"
+# require_relative "../lib/simple_route"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -43,6 +43,6 @@ module MysticWallet
     config.api_only = true
 
     # Add simple route middleware that only allows /up endpoint
-    config.middleware.insert_before ActionDispatch::HostAuthorization, SimpleRoute
+    # config.middleware.insert_after(ActionDispatch::HostAuthorization, SimpleRoute)
   end
 end
