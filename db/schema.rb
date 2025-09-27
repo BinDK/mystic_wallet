@@ -10,19 +10,64 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_05_152455) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_26_231754) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accounts", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "account_type", null: false
+    t.decimal "balance", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_type"], name: "index_accounts_on_account_type"
+    t.index ["user_id", "account_type"], name: "index_accounts_on_user_id_and_account_type"
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+    t.check_constraint "account_type::text = ANY (ARRAY['checking'::character varying, 'savings'::character varying, 'credit_card'::character varying, 'investment'::character varying, 'loan'::character varying]::text[])", name: "valid_account_types"
+    t.check_constraint "balance >= '-1000000'::integer::numeric AND balance <= 1000000::numeric", name: "balance_range"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "category_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_type"], name: "index_categories_on_category_type"
+    t.index ["name", "category_type"], name: "index_categories_on_name_and_category_type", unique: true
+    t.check_constraint "category_type::text = ANY (ARRAY['income'::character varying, 'expense'::character varying]::text[])", name: "valid_category_types"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount", null: false
+    t.text "description", null: false
+    t.date "transaction_date", null: false
+    t.bigint "account_id", null: false
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id", "transaction_date"], name: "index_transactions_on_account_id_and_transaction_date"
+    t.index ["account_id"], name: "index_transactions_on_account_id"
+    t.index ["category_id", "transaction_date"], name: "index_transactions_on_category_id_and_transaction_date"
+    t.index ["category_id"], name: "index_transactions_on_category_id"
+    t.index ["transaction_date"], name: "index_transactions_on_transaction_date"
+    t.check_constraint "amount >= '-100000'::integer::numeric AND amount <= 100000::numeric", name: "amount_range"
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string "email"
+    t.string "email", null: false
     t.string "password_digest", default: "", null: false
     t.string "phone"
     t.string "gender"
-    t.string "first_name", default: ""
-    t.string "last_name", default: ""
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_users_on_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
+
+  add_foreign_key "accounts", "users"
+  add_foreign_key "transactions", "accounts"
+  add_foreign_key "transactions", "categories"
 end
