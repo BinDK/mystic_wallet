@@ -48,6 +48,6 @@ gem "sidekiq-cron", "~> 2.3"
 
 gem "faker", "~> 3.5"
 
-gem "dotenv-rails", "~> 3.1"
+gem "dotenv-rails", "~> 3.2"
 
 gem "scenic", "~> 1.9"
