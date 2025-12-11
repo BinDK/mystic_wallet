@@ -43,7 +43,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
-gem "sidekiq", "~> 8.0"
+gem "sidekiq", "~> 8.1"
 gem "sidekiq-cron", "~> 2.3"
 
 gem "faker", "~> 3.5"
