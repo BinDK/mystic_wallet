@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_27_024138) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_08_075941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_27_024138) do
     t.index ["account_type"], name: "index_accounts_on_account_type"
     t.index ["user_id", "account_type"], name: "index_accounts_on_user_id_and_account_type"
     t.index ["user_id"], name: "index_accounts_on_user_id"
-    t.check_constraint "account_type::text = ANY (ARRAY['checking'::character varying::text, 'savings'::character varying::text, 'credit_card'::character varying::text, 'investment'::character varying::text, 'loan'::character varying::text])", name: "valid_account_types"
+    t.check_constraint "account_type::text = ANY (ARRAY['checking'::character varying, 'savings'::character varying, 'credit_card'::character varying, 'investment'::character varying, 'loan'::character varying]::text[])", name: "valid_account_types"
     t.check_constraint "balance >= '-1000000'::integer::numeric AND balance <= 1000000::numeric", name: "balance_range"
   end
 
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_27_024138) do
     t.datetime "updated_at", null: false
     t.index ["category_type"], name: "index_categories_on_category_type"
     t.index ["name", "category_type"], name: "index_categories_on_name_and_category_type", unique: true
-    t.check_constraint "category_type::text = ANY (ARRAY['income'::character varying::text, 'expense'::character varying::text])", name: "valid_category_types"
+    t.check_constraint "category_type::text = ANY (ARRAY['income'::character varying, 'expense'::character varying]::text[])", name: "valid_category_types"
   end
 
   create_table "transactions", force: :cascade do |t|
