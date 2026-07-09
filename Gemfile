@@ -51,3 +51,5 @@ gem "faker", "~> 3.5"
 gem "dotenv-rails", "~> 3.1"
 
 gem "scenic", "~> 1.9"
+gem "kaminari"
+
