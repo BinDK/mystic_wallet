@@ -195,6 +195,8 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.16)
+    rack-attack (6.8.0)
+      rack (>= 1.0, < 4)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -325,6 +327,7 @@ DEPENDENCIES
   kaminari
   pg (~> 1.6.2)
   puma (>= 5.0)
+  rack-attack
   rails (~> 7.2.2, >= 7.2.2.2)
   redis (>= 4.0.1)
   rubocop-rails-omakase
