@@ -7,6 +7,11 @@ Rails.application.routes.draw do
       resources :accounts, only: %i[index show]
       resources :categories, only: %i[index]
       resources :transactions, only: %i[index show]
+
+      get "reports/monthly-spending", to: "reports#monthly_spending"
+      get "reports/trend", to: "reports#trend"
+      get "reports/top-spenders", to: "reports#top_spenders"
+      get "reports/category-rank", to: "reports#category_rank"
     end
   end
 end
