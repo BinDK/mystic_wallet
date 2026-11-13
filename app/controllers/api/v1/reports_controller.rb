@@ -19,19 +19,17 @@ module Api
         end
 
         summaries = summaries.order(month_date: :desc, total_amount: :desc)
+                             .page(params[:page]).per(params[:per_page])
 
         render json: summaries
       end
 
       def trend
+        # The view is per user/account; sum it to one point per month and type
         monthly = MonthlyCategorySummary
-          .select(
-            :month_date,
-            :category_type,
-            :total_amount,
-            :transaction_count
-          )
-          .order(:month_date)
+          .group(:month_date, :category_type)
+          .select("month_date, category_type, SUM(total_amount) AS total_amount, SUM(transaction_count) AS transaction_count")
+          .order(:month_date, :category_type)
 
         monthly = monthly.where(category_type: params[:type]) if params[:type].present?
 
@@ -52,15 +50,17 @@ module Api
 
         tiers = tiers.by_tier(params[:tier]) if params[:tier].present?
 
-        tiers = tiers.page(params[:page]).per(params[:per_page] || 20)
+        tiers = tiers.page(params[:page]).per(params[:per_page])
 
         render json: tiers
       end
 
       def category_rank
+        # The view is per user/account; sum it so each category is ranked once per month
         monthly = MonthlyCategorySummary
-          .select(:month_date, :category_name, :category_type, :total_amount, :transaction_count)
-          .order(month_date: :desc, total_amount: :desc)
+          .group(:month_date, :category_name, :category_type)
+          .select("month_date, category_name, category_type, SUM(total_amount) AS total_amount, SUM(transaction_count) AS transaction_count")
+          .order(Arel.sql("month_date DESC, SUM(total_amount) DESC"))
 
         monthly = monthly.where(category_type: params[:type]) if params[:type].present?
         monthly = monthly.where("EXTRACT(YEAR FROM month_date) = ?", params[:year].to_i) if params[:year].present?

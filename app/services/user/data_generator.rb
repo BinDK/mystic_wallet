@@ -7,9 +7,12 @@ class User::DataGenerator
     phone = Faker::PhoneNumber.cell_phone
     gender = Faker::Gender.binary_type.downcase
 
-    user = User.create!(email:, first_name:, last_name:,
-                        phone:, gender:, password:)
-    User::AccountBuilder.create_accounts_for_user(user)
+    user = ActiveRecord::Base.transaction do
+      User.create!(email:, first_name:, last_name:,
+                   phone:, gender:, password:).tap do |u|
+        User::AccountBuilder.create_accounts_for_user(u)
+      end
+    end
 
     Rails.logger.info "Created user: #{user.email} with #{user.accounts.count} accounts"
   end

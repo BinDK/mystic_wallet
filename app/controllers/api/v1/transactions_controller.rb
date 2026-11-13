@@ -16,7 +16,7 @@ module Api
           transactions = transactions.where("transaction_date <= ?", params[:end_date])
         end
 
-        transactions = transactions.page(params[:page]).per(params[:per_page] || 20)
+        transactions = transactions.page(params[:page]).per(params[:per_page])
 
         render json: transactions.map { |t|
           {

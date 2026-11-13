@@ -4,8 +4,7 @@ class Rack::Attack
   end
 
   throttle("api/user", limit: 20, period: 1.minute) do |req|
-    if req.path.start_with?("/api/") && req.params["api_key"].present?
-      req.params["api_key"]
-    end
+    key = req.get_header("HTTP_X_API_KEY").presence || req.params["api_key"].presence
+    key if req.path.start_with?("/api/")
   end
 end

@@ -9,8 +9,6 @@ class Transaction::BalanceManager
     handle_income(account, amount)
   end
 
-  private
-
   def self.handle_expense(account, amount)
     # TODO: Personal wallet logic - simple balance updates
     # All account types use same logic: expenses decrease balance
@@ -24,5 +22,11 @@ class Transaction::BalanceManager
 
   def self.update_query(account, new_balance)
     account.update!(balance: new_balance)
+  rescue ActiveRecord::RecordInvalid
+    # DB rolls back, but keep the in-memory account in sync for the rest of the run
+    account.restore_attributes([ :balance ])
+    raise
   end
+
+  private_class_method :handle_expense, :handle_income, :update_query
 end

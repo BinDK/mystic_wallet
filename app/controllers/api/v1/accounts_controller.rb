@@ -6,7 +6,7 @@ module Api
         accounts = accounts.where(user_id: params[:user_id]) if params[:user_id]
         accounts = accounts.order(created_at: :desc)
                            .page(params[:page])
-                           .per(params[:per_page] || 20)
+                           .per(params[:per_page])
         render json: accounts
       end
 

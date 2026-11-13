@@ -11,9 +11,9 @@ class Transaction::TransactionTypeResolver
     end
   end
 
-  private
-
   def self.random_type(true_ratio)
     Faker::Boolean.boolean(true_ratio:) ? "expense" : "income"
   end
+
+  private_class_method :random_type
 end

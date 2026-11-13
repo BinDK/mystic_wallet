@@ -21,9 +21,9 @@ class Transaction::AmountCalculator
     end
   end
 
-  private
-
   def self.amount_between(from: 10, to: 100)
     Faker::Number.between(from:, to:)
   end
+
+  private_class_method :amount_between
 end

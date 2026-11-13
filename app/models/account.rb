@@ -39,6 +39,8 @@ class Account < ApplicationRecord
   private
 
   def realistic_balance_for_account_type
+    return if balance.nil?
+
     case account_type
     when "credit_card"
       errors.add(:balance, "should be negative or zero for credit cards") if balance > 0

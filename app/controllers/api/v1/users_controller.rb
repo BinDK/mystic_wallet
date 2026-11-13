@@ -5,7 +5,7 @@ module Api
         users = User.select(:id, :first_name, :last_name, :email, :phone, :gender, :created_at)
                     .order(created_at: :desc)
                     .page(params[:page])
-                    .per(params[:per_page] || 20)
+                    .per(params[:per_page])
         render json: users
       end
 
